@@ -1,11 +1,8 @@
 package com.devanshi.controller;
 
 import com.devanshi.entity.Expense;
-import com.devanshi.exception.ExpenseNotFoundException;
-import com.devanshi.repo.ExpenseRepo;
 import com.devanshi.service.ExpenseService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
