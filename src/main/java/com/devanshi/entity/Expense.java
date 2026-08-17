@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -27,7 +28,7 @@ public class Expense {
 
     @NotNull(message = "Amount is required")
     @Positive(message = "Amount must be greater than 0")
-    private Integer amount;
+    private BigDecimal amount;
 
     @NotBlank(message = "Category is required")
     private String category;

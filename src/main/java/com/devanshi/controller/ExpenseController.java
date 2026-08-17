@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.devanshi.dto.ExpenseDTO;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Expense> getExpenseById(
+    public ResponseEntity<ExpenseDTO> getExpenseById(
             @PathVariable Integer id) {
 
         return ResponseEntity.ok(
@@ -29,7 +30,7 @@ public class ExpenseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Expense>> getAllExpenses() {
+    public ResponseEntity<List<ExpenseDTO>> getAllExpenses() {
 
         return ResponseEntity.ok(
                 expenseService.getAllExpenses()
@@ -37,24 +38,22 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<Expense> addExpense(
-            @Valid @RequestBody Expense expense) {
+    public ResponseEntity<ExpenseDTO> addExpense(
+            @Valid @RequestBody ExpenseDTO expenseDTO) {
 
         return new ResponseEntity<>(
-                expenseService.addExpense(expense),
+                expenseService.addExpense(expenseDTO),
                 HttpStatus.CREATED
         );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Expense> updateExpense(
+    public ResponseEntity<ExpenseDTO> updateExpense(
             @PathVariable Integer id,
-            @Valid @RequestBody Expense expense) {
-
-        expense.setId(id);
+            @Valid @RequestBody ExpenseDTO expenseDTO) {
 
         return ResponseEntity.ok(
-                expenseService.updateExpense(expense)
+                expenseService.updateExpense(id, expenseDTO)
         );
     }
 
