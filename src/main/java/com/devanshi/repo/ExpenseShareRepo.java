@@ -10,4 +10,6 @@ public interface ExpenseShareRepo extends JpaRepository<ExpenseShare, Integer> {
     List<ExpenseShare> findByExpenseId(Integer expenseId);
 
     List<ExpenseShare> findByUserId(Integer userId);
+
+    List<ExpenseShare> findByExpenseGroupId(Integer groupId);
 }

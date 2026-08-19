@@ -6,8 +6,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.devanshi.dto.BalanceDTO;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/groups")
@@ -32,6 +33,15 @@ public class GroupController {
 
         return ResponseEntity.ok(
                 groupService.getGroupById(id)
+        );
+    }
+
+    @GetMapping("/{groupId}/balances")
+    public ResponseEntity<List<BalanceDTO>> getGroupBalances(
+            @PathVariable Integer groupId) {
+
+        return ResponseEntity.ok(
+                groupService.getGroupBalances(groupId)
         );
     }
 

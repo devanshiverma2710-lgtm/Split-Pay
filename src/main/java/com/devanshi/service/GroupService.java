@@ -3,10 +3,16 @@ package com.devanshi.service;
 import com.devanshi.entity.Group;
 import com.devanshi.entity.User;
 import com.devanshi.exception.ExpenseNotFoundException;
+import com.devanshi.repo.ExpenseShareRepo;
 import com.devanshi.repo.GroupRepo;
 import com.devanshi.repo.UserRepo;
 import org.springframework.stereotype.Service;
+import com.devanshi.dto.BalanceDTO;
+import com.devanshi.entity.ExpenseShare;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 @Service
@@ -14,10 +20,16 @@ public class GroupService {
 
     private final GroupRepo groupRepo;
     private final UserRepo userRepo;
+    private final ExpenseShareRepo expenseShareRepo;
 
-    public GroupService(GroupRepo groupRepo, UserRepo userRepo) {
+    public GroupService(
+            GroupRepo groupRepo,
+            UserRepo userRepo,
+            ExpenseShareRepo expenseShareRepo) {
+
         this.groupRepo = groupRepo;
         this.userRepo = userRepo;
+        this.expenseShareRepo = expenseShareRepo;
     }
 
     public List<Group> getAllGroups() {
@@ -77,5 +89,60 @@ public class GroupService {
         group.getUsers().add(user);
 
         return groupRepo.save(group);
+    }
+
+    public List<BalanceDTO> getGroupBalances(Integer groupId) {
+
+        Group group = groupRepo.findById(groupId)
+                .orElseThrow(() ->
+                        new RuntimeException("Group not found"));
+
+        List<ExpenseShare> shares =
+                expenseShareRepo.findByExpenseGroupId(groupId);
+
+        Map<Integer, BigDecimal> balances = new HashMap<>();
+
+        // Initially everyone owes 0
+        for (User user : group.getUsers()) {
+            balances.put(
+                    user.getId(),
+                    BigDecimal.ZERO
+            );
+        }
+
+        // Calculate what each user owes
+        for (ExpenseShare share : shares) {
+
+            Integer userId = share.getUser().getId();
+
+            balances.put(
+                    userId,
+                    balances.get(userId)
+                            .subtract(share.getAmount())
+            );
+        }
+
+        // Add what each user paid
+        for (ExpenseShare share : shares) {
+
+            User payer = share.getExpense().getPaidBy();
+
+            Integer payerId = payer.getId();
+
+            balances.put(
+                    payerId,
+                    balances.get(payerId)
+                            .add(share.getAmount())
+            );
+        }
+
+        return group.getUsers()
+                .stream()
+                .map(user -> new BalanceDTO(
+                        user.getId(),
+                        user.getName(),
+                        balances.get(user.getId())
+                ))
+                .toList();
     }
 }
