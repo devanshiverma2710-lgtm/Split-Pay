@@ -4,12 +4,33 @@ import com.devanshi.dto.ExpenseDTO;
 import com.devanshi.entity.Expense;
 import com.devanshi.exception.ExpenseNotFoundException;
 import com.devanshi.repo.ExpenseRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+
+import com.devanshi.dto.ExpenseShareRequest;
+import com.devanshi.dto.SplitExpenseRequest;
+import com.devanshi.entity.ExpenseShare;
+import com.devanshi.entity.Group;
+import com.devanshi.entity.User;
+import com.devanshi.repo.ExpenseShareRepo;
+import com.devanshi.repo.GroupRepo;
+import com.devanshi.repo.UserRepo;
+
+import java.math.BigDecimal;
 
 @Service
 public class ExpenseService {
     private final ExpenseRepo expenseRepo;
+
+    @Autowired
+    private ExpenseShareRepo expenseShareRepo;
+
+    @Autowired
+    private GroupRepo groupRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     public ExpenseService(ExpenseRepo expenseRepo) {
         this.expenseRepo = expenseRepo;
@@ -99,5 +120,49 @@ public class ExpenseService {
         dto.setDate(expense.getDate());
 
         return dto;
+    }
+
+    public Expense createSplitExpense(SplitExpenseRequest request) {
+
+        // Find group
+        Group group = groupRepo.findById(request.getGroupId())
+                .orElseThrow(() ->
+                        new RuntimeException("Group not found"));
+
+        // Find payer
+        User paidBy = userRepo.findById(request.getPaidBy())
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        // Create expense
+        Expense expense = new Expense();
+
+        expense.setTitle(request.getTitle());
+        expense.setAmount(request.getAmount());
+        expense.setCategory(request.getCategory());
+        expense.setNote(request.getNote());
+        expense.setDate(request.getDate());
+        expense.setGroup(group);
+        expense.setPaidBy(paidBy);
+
+        Expense savedExpense = expenseRepo.save(expense);
+
+        // Save shares
+        for (ExpenseShareRequest shareRequest : request.getShares()) {
+
+            User user = userRepo.findById(shareRequest.getUserId())
+                    .orElseThrow(() ->
+                            new RuntimeException("User not found"));
+
+            ExpenseShare share = new ExpenseShare();
+
+            share.setExpense(savedExpense);
+            share.setUser(user);
+            share.setAmount(shareRequest.getAmount());
+
+            expenseShareRepo.save(share);
+        }
+
+        return savedExpense;
     }
 }

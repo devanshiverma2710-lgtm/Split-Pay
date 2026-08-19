@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.devanshi.dto.ExpenseDTO;
+import com.devanshi.dto.SplitExpenseRequest;
 
 import java.util.List;
 
@@ -74,6 +75,16 @@ public class ExpenseController {
 
         return ResponseEntity.ok(
                 expenseService.getExpensesByCategory(category)
+        );
+    }
+
+    @PostMapping("/split")
+    public ResponseEntity<Expense> createSplitExpense(
+            @Valid @RequestBody SplitExpenseRequest request) {
+
+        return new ResponseEntity<>(
+                expenseService.createSplitExpense(request),
+                HttpStatus.CREATED
         );
     }
 }
