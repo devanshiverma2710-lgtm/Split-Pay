@@ -9,6 +9,10 @@ import com.devanshi.repo.UserRepo;
 import org.springframework.stereotype.Service;
 import com.devanshi.dto.BalanceDTO;
 import com.devanshi.entity.ExpenseShare;
+import com.devanshi.dto.SettlementDTO;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -144,5 +148,68 @@ public class GroupService {
                         balances.get(user.getId())
                 ))
                 .toList();
+    }
+
+    public List<SettlementDTO> getGroupSettlements(Integer groupId) {
+
+        List<BalanceDTO> balances = getGroupBalances(groupId);
+
+        List<BalanceDTO> creditors = balances.stream()
+                .filter(b -> b.getBalance().compareTo(BigDecimal.ZERO) > 0)
+                .sorted(Comparator.comparing(BalanceDTO::getBalance).reversed())
+                .toList();
+
+        List<BalanceDTO> debtors = balances.stream()
+                .filter(b -> b.getBalance().compareTo(BigDecimal.ZERO) < 0)
+                .sorted(Comparator.comparing(BalanceDTO::getBalance))
+                .toList();
+
+        List<SettlementDTO> settlements = new ArrayList<>();
+
+        int i = 0;
+        int j = 0;
+
+        while (i < debtors.size() && j < creditors.size()) {
+
+            BalanceDTO debtor = debtors.get(i);
+            BalanceDTO creditor = creditors.get(j);
+
+            BigDecimal amountOwed =
+                    debtor.getBalance().abs();
+
+            BigDecimal amountToReceive =
+                    creditor.getBalance();
+
+            BigDecimal settlementAmount =
+                    amountOwed.min(amountToReceive);
+
+            settlements.add(
+                    new SettlementDTO(
+                            debtor.getUserId(),
+                            debtor.getUserName(),
+                            creditor.getUserId(),
+                            creditor.getUserName(),
+                            settlementAmount
+                    )
+            );
+
+            debtor.setBalance(
+                    debtor.getBalance().add(settlementAmount)
+            );
+
+            creditor.setBalance(
+                    creditor.getBalance().subtract(settlementAmount)
+            );
+
+            if (debtor.getBalance().compareTo(BigDecimal.ZERO) == 0) {
+                i++;
+            }
+
+            if (creditor.getBalance().compareTo(BigDecimal.ZERO) == 0) {
+                j++;
+            }
+        }
+
+        return settlements;
     }
 }

@@ -1,5 +1,6 @@
 package com.devanshi.controller;
 
+import com.devanshi.dto.SettlementDTO;
 import com.devanshi.entity.Group;
 import com.devanshi.service.GroupService;
 import jakarta.validation.Valid;
@@ -42,6 +43,15 @@ public class GroupController {
 
         return ResponseEntity.ok(
                 groupService.getGroupBalances(groupId)
+        );
+    }
+
+    @GetMapping("/{groupId}/settlements")
+    public ResponseEntity<List<SettlementDTO>> getGroupSettlements(
+            @PathVariable Integer groupId) {
+
+        return ResponseEntity.ok(
+                groupService.getGroupSettlements(groupId)
         );
     }
 
