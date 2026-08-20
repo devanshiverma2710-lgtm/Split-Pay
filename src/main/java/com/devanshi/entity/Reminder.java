@@ -22,6 +22,10 @@ public class Reminder {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime nextReminderAt;
+
+    private LocalDateTime lastReminderAt;
+
     private boolean sent;
 
     public Reminder() {
@@ -65,5 +69,21 @@ public class Reminder {
 
     public void setSent(boolean sent) {
         this.sent = sent;
+    }
+
+    public LocalDateTime getNextReminderAt() {
+        return nextReminderAt;
+    }
+
+    public void setNextReminderAt(LocalDateTime nextReminderAt) {
+        this.nextReminderAt = nextReminderAt;
+    }
+
+    public LocalDateTime getLastReminderAt() {
+        return lastReminderAt;
+    }
+
+    public void setLastReminderAt(LocalDateTime lastReminderAt) {
+        this.lastReminderAt = lastReminderAt;
     }
 }

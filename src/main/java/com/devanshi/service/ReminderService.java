@@ -57,7 +57,11 @@ public class ReminderService {
 
         reminder.setPayment(payment);
         reminder.setRemindedUser(user);
-        reminder.setCreatedAt(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+
+        reminder.setCreatedAt(now);
+        reminder.setLastReminderAt(now);
+        reminder.setNextReminderAt(now.plusDays(1));
         reminder.setSent(true);
 
         Reminder savedReminder = reminderRepo.save(reminder);
