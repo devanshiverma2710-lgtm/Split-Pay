@@ -13,4 +13,10 @@ public interface PaymentRepo extends JpaRepository<Payment, Integer> {
     List<Payment> findByToUserId(Integer userId);
 
     List<Payment> findByStatus(PaymentStatus status);
+
+    List<Payment> findByFromUserIdAndToUserIdAndStatus(
+            Integer fromUserId,
+            Integer toUserId,
+            PaymentStatus status
+    );
 }

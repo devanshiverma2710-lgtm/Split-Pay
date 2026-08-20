@@ -1,6 +1,7 @@
 package com.devanshi.service;
 
 import com.devanshi.entity.Group;
+import com.devanshi.entity.Payment;
 import com.devanshi.entity.User;
 import com.devanshi.exception.ExpenseNotFoundException;
 import com.devanshi.repo.ExpenseShareRepo;
@@ -25,15 +26,18 @@ public class GroupService {
     private final GroupRepo groupRepo;
     private final UserRepo userRepo;
     private final ExpenseShareRepo expenseShareRepo;
+    private final PaymentService paymentService;
 
     public GroupService(
             GroupRepo groupRepo,
             UserRepo userRepo,
-            ExpenseShareRepo expenseShareRepo) {
+            ExpenseShareRepo expenseShareRepo,
+            PaymentService paymentService) {
 
         this.groupRepo = groupRepo;
         this.userRepo = userRepo;
         this.expenseShareRepo = expenseShareRepo;
+        this.paymentService = paymentService;
     }
 
     public List<Group> getAllGroups() {
@@ -211,5 +215,25 @@ public class GroupService {
         }
 
         return settlements;
+    }
+
+    public List<Payment> createPaymentsFromSettlements(Integer groupId) {
+
+        List<SettlementDTO> settlements = getGroupSettlements(groupId);
+
+        List<Payment> payments = new ArrayList<>();
+
+        for (SettlementDTO settlement : settlements) {
+
+            Payment payment = paymentService.createPaymentFromSettlement(
+                    settlement.getFromUserId(),
+                    settlement.getToUserId(),
+                    settlement.getAmount()
+            );
+
+            payments.add(payment);
+        }
+
+        return payments;
     }
 }

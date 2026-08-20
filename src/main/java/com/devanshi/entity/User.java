@@ -20,6 +20,8 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    private String upiId;
+
     public User() {
     }
 
@@ -51,5 +53,12 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public String getUpiId() {
+        return upiId;
+    }
+
+    public void setUpiId(String upiId) {
+        this.upiId = upiId;
     }
 }

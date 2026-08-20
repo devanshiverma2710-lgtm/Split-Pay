@@ -2,6 +2,7 @@ package com.devanshi.controller;
 
 import com.devanshi.dto.SettlementDTO;
 import com.devanshi.entity.Group;
+import com.devanshi.entity.Payment;
 import com.devanshi.service.GroupService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -65,6 +66,14 @@ public class GroupController {
         );
     }
 
+    @PostMapping("/{groupId}/payments")
+    public ResponseEntity<List<Payment>> createGroupPayments(
+            @PathVariable Integer groupId) {
+
+        return ResponseEntity.ok(
+                groupService.createPaymentsFromSettlements(groupId)
+        );
+    }
     @PutMapping("/{id}")
     public ResponseEntity<Group> updateGroup(
             @PathVariable Integer id,

@@ -37,6 +37,7 @@ public class UserService {
 
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
+        existingUser.setUpiId(user.getUpiId());
 
         return userRepo.save(existingUser);
     }

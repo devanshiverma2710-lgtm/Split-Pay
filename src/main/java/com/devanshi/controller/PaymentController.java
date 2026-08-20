@@ -1,5 +1,7 @@
 package com.devanshi.controller;
 
+import com.devanshi.dto.PaymentDTO;
+import com.devanshi.dto.UPIPaymentDTO;
 import com.devanshi.entity.Payment;
 import com.devanshi.service.PaymentService;
 import jakarta.validation.Valid;
@@ -7,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -20,18 +23,18 @@ public class PaymentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Payment>> getAllPayments() {
+    public ResponseEntity<List<PaymentDTO>> getAllPayments() {
         return ResponseEntity.ok(
-                paymentService.getAllPayments()
+                paymentService.getAllPaymentDTOs()
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Payment> getPaymentById(
+    public ResponseEntity<PaymentDTO> getPaymentById(
             @PathVariable Integer id) {
 
         return ResponseEntity.ok(
-                paymentService.getPaymentById(id)
+                paymentService.getPaymentDTOById(id)
         );
     }
 
@@ -61,9 +64,20 @@ public class PaymentController {
     }
 
     @GetMapping("/pending")
-    public ResponseEntity<List<Payment>> getPendingPayments() {
+    public ResponseEntity<List<PaymentDTO>> getPendingPayments() {
+
         return ResponseEntity.ok(
-                paymentService.getPendingPayments()
+                paymentService.getPendingPaymentDTOs()
         );
     }
+    @GetMapping("/{id}/upi")
+    public ResponseEntity<UPIPaymentDTO> generateUPIPaymentLink(
+            @PathVariable Integer id) {
+
+        return ResponseEntity.ok(
+                paymentService.generateUPIPaymentLink(id)
+        );
+    }
+
+
 }
