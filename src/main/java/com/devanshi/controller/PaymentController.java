@@ -38,14 +38,16 @@ public class PaymentController {
         );
     }
 
-    @PostMapping("/{fromUserId}/{toUserId}")
+    @PostMapping("/{groupId}/{fromUserId}/{toUserId}")
     public ResponseEntity<Payment> createPayment(
+            @PathVariable Integer groupId,
             @PathVariable Integer fromUserId,
             @PathVariable Integer toUserId,
             @Valid @RequestBody Payment payment) {
 
         return new ResponseEntity<>(
                 paymentService.createPayment(
+                        groupId,
                         fromUserId,
                         toUserId,
                         payment
@@ -78,6 +80,22 @@ public class PaymentController {
                 paymentService.generateUPIPaymentLink(id)
         );
     }
+    @PostMapping("/from-settlement")
+    public ResponseEntity<Payment> createPaymentFromSettlement(
+            @RequestParam Integer groupId,
+            @RequestParam Integer fromUserId,
+            @RequestParam Integer toUserId,
+            @RequestParam BigDecimal amount) {
 
+        return new ResponseEntity<>(
+                paymentService.createPaymentFromSettlement(
+                        groupId,
+                        fromUserId,
+                        toUserId,
+                        amount
+                ),
+                HttpStatus.CREATED
+        );
+    }
 
 }

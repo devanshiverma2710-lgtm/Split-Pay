@@ -1,38 +1,35 @@
 package com.devanshi.dto;
 
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
 
 public class SplitExpenseRequest {
 
-    @NotNull
+    @NotBlank(message = "Title is required")
     private String title;
 
-    @NotNull
+    @NotNull(message = "Amount is required")
+    @Positive(message = "Amount must be greater than 0")
     private BigDecimal amount;
 
-    @NotNull
+    @NotBlank(message = "Category is required")
     private String category;
 
     private String note;
 
-    @NotNull
-    private LocalDate date;
-
-    @NotNull
+    @NotNull(message = "Group is required")
     private Integer groupId;
 
-    @NotNull
+    @NotNull(message = "Payer is required")
     private Integer paidBy;
 
-    @Valid
-    private List<ExpenseShareRequest> shares;
 
     public SplitExpenseRequest() {
     }
+
 
     public String getTitle() {
         return title;
@@ -42,6 +39,7 @@ public class SplitExpenseRequest {
         this.title = title;
     }
 
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -49,6 +47,7 @@ public class SplitExpenseRequest {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
 
     public String getCategory() {
         return category;
@@ -58,6 +57,7 @@ public class SplitExpenseRequest {
         this.category = category;
     }
 
+
     public String getNote() {
         return note;
     }
@@ -66,13 +66,6 @@ public class SplitExpenseRequest {
         this.note = note;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 
     public Integer getGroupId() {
         return groupId;
@@ -82,19 +75,12 @@ public class SplitExpenseRequest {
         this.groupId = groupId;
     }
 
+
     public Integer getPaidBy() {
         return paidBy;
     }
 
     public void setPaidBy(Integer paidBy) {
         this.paidBy = paidBy;
-    }
-
-    public List<ExpenseShareRequest> getShares() {
-        return shares;
-    }
-
-    public void setShares(List<ExpenseShareRequest> shares) {
-        this.shares = shares;
     }
 }

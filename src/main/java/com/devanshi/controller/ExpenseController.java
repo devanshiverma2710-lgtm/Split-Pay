@@ -87,4 +87,13 @@ public class ExpenseController {
                 HttpStatus.CREATED
         );
     }
+
+    @GetMapping("/group/{groupId}")
+    public ResponseEntity<List<ExpenseDTO>> getExpensesByGroup(
+            @PathVariable Integer groupId) {
+
+        return ResponseEntity.ok(
+                expenseService.getExpensesByGroup(groupId)
+        );
+    }
 }

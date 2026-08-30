@@ -51,7 +51,7 @@ public class ReminderService {
             );
         }
 
-        User user = payment.getFromUser();
+        User user = payment.getToUser();
 
         Reminder reminder = new Reminder();
 
@@ -61,7 +61,7 @@ public class ReminderService {
 
         reminder.setCreatedAt(now);
         reminder.setLastReminderAt(now);
-        reminder.setNextReminderAt(now.plusDays(1));
+        reminder.setNextReminderAt(now);
         reminder.setSent(true);
 
         Reminder savedReminder = reminderRepo.save(reminder);

@@ -20,6 +20,10 @@ public class Payment {
     @JoinColumn(name = "to_user_id", nullable = false)
     private User toUser;
 
+    @ManyToOne
+    @JoinColumn(name = "group_id",nullable = false)
+    private Group group;
+
     @Column(nullable = false)
     private BigDecimal amount;
 
@@ -78,5 +82,13 @@ public class Payment {
 
     public void setPaidAt(LocalDateTime paidAt) {
         this.paidAt = paidAt;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

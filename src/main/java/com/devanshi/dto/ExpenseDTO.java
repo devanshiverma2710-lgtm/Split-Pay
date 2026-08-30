@@ -9,6 +9,8 @@ import java.time.LocalDate;
 
 public class ExpenseDTO {
 
+    private Integer id;
+
     @NotBlank(message = "Category is required")
     private String category;
 
@@ -21,11 +23,22 @@ public class ExpenseDTO {
 
     private String note;
 
-    @NotNull(message = "Date is required")
+
     private LocalDate date;
+
+    private boolean groupExpense;
+    private Integer groupId;
+    private BigDecimal userShare;
 
     public String getCategory() {
         return category;
+    }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setCategory(String category) {
@@ -62,6 +75,29 @@ public class ExpenseDTO {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+    public boolean isGroupExpense() {
+        return groupExpense;
+    }
+
+    public void setGroupExpense(boolean groupExpense) {
+        this.groupExpense = groupExpense;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public BigDecimal getUserShare() {
+        return userShare;
+    }
+
+    public void setUserShare(BigDecimal userShare) {
+        this.userShare = userShare;
     }
 }
 

@@ -45,6 +45,5 @@ public class Expense {
     @NotBlank(message = "note is required")
     private String note;
 
-    @NotNull(message = "Date is required")
     private LocalDate date;
 }

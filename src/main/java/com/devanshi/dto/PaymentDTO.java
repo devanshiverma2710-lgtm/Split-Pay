@@ -9,11 +9,15 @@ public class PaymentDTO {
 
     private Integer paymentId;
 
+    private Integer groupId;
+    private String groupName;
+
     private Integer fromUserId;
     private String fromUserName;
 
     private Integer toUserId;
     private String toUserName;
+
     private String upiId;
 
     private BigDecimal amount;
@@ -22,12 +26,16 @@ public class PaymentDTO {
 
     private LocalDateTime paidAt;
 
+
+
     private String upiLink;
 
     public PaymentDTO() {
     }
 
     public PaymentDTO(Integer paymentId,
+                      Integer groupId,
+                      String groupName,
                       Integer fromUserId,
                       String fromUserName,
                       Integer toUserId,
@@ -39,6 +47,8 @@ public class PaymentDTO {
                       String upiLink) {
 
         this.paymentId = paymentId;
+        this.groupId = groupId;
+        this.groupName = groupName;
         this.fromUserId = fromUserId;
         this.fromUserName = fromUserName;
         this.toUserId = toUserId;
@@ -56,6 +66,22 @@ public class PaymentDTO {
 
     public void setPaymentId(Integer paymentId) {
         this.paymentId = paymentId;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public Integer getFromUserId() {
@@ -129,4 +155,5 @@ public class PaymentDTO {
     public void setUpiLink(String upiLink) {
         this.upiLink = upiLink;
     }
+
 }

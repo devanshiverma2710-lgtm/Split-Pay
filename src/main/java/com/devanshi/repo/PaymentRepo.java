@@ -8,13 +8,20 @@ import java.util.List;
 
 public interface PaymentRepo extends JpaRepository<Payment, Integer> {
 
-    List<Payment> findByFromUserId(Integer userId);
-
-    List<Payment> findByToUserId(Integer userId);
-
     List<Payment> findByStatus(PaymentStatus status);
 
     List<Payment> findByFromUserIdAndToUserIdAndStatus(
+            Integer fromUserId,
+            Integer toUserId,
+            PaymentStatus status
+    );
+
+    List<Payment> findByGroupIdAndStatus(
+            Integer groupId,
+            PaymentStatus status
+    );
+    List<Payment> findByGroupIdAndFromUserIdAndToUserIdAndStatus(
+            Integer groupId,
             Integer fromUserId,
             Integer toUserId,
             PaymentStatus status

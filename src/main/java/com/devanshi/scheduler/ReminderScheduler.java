@@ -5,6 +5,7 @@ import com.devanshi.entity.PaymentStatus;
 import com.devanshi.entity.Reminder;
 import com.devanshi.repo.PaymentRepo;
 import com.devanshi.repo.ReminderRepo;
+import com.devanshi.service.EmailService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,13 +17,16 @@ public class ReminderScheduler {
 
     private final ReminderRepo reminderRepo;
     private final PaymentRepo paymentRepo;
+    private final EmailService emailService;
 
     public ReminderScheduler(
             ReminderRepo reminderRepo,
-            PaymentRepo paymentRepo) {
+            PaymentRepo paymentRepo,
+            EmailService emailService) {
 
         this.reminderRepo = reminderRepo;
         this.paymentRepo = paymentRepo;
+        this.emailService = emailService;
     }
 
     @Scheduled(fixedRate = 60000)
@@ -46,13 +50,12 @@ public class ReminderScheduler {
             if (reminder.getNextReminderAt() != null
                     && !reminder.getNextReminderAt().isAfter(now)) {
 
-                System.out.println(
-                        "Reminder due for user: "
-                                + reminder.getRemindedUser().getName()
-                                + " | Payment: "
-                                + payment.getAmount()
+                emailService.sendPaymentReminder(
+                        reminder.getRemindedUser().getEmail(),
+                        reminder.getRemindedUser().getName(),
+                        payment.getFromUser().getName(),
+                        payment.getAmount().toString()
                 );
-
                 reminder.setLastReminderAt(now);
                 reminder.setNextReminderAt(
                         now.plusDays(1)

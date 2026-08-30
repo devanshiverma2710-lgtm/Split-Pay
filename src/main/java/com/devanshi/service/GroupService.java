@@ -1,20 +1,16 @@
 package com.devanshi.service;
 
-import com.devanshi.entity.Group;
-import com.devanshi.entity.Payment;
-import com.devanshi.entity.User;
+import com.devanshi.entity.*;
 import com.devanshi.exception.ExpenseNotFoundException;
-import com.devanshi.repo.ExpenseShareRepo;
-import com.devanshi.repo.GroupRepo;
-import com.devanshi.repo.UserRepo;
+import com.devanshi.repo.*;
 import org.springframework.stereotype.Service;
 import com.devanshi.dto.BalanceDTO;
-import com.devanshi.entity.ExpenseShare;
 import com.devanshi.dto.SettlementDTO;
-
+import com.devanshi.entity.Payment;
 import java.util.ArrayList;
 import java.util.Comparator;
-
+import com.devanshi.entity.Expense;
+import com.devanshi.repo.ExpenseRepo;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,17 +23,23 @@ public class GroupService {
     private final UserRepo userRepo;
     private final ExpenseShareRepo expenseShareRepo;
     private final PaymentService paymentService;
+    private final PaymentRepo paymentRepo;
+    private final ExpenseRepo expenseRepo;
 
     public GroupService(
             GroupRepo groupRepo,
             UserRepo userRepo,
             ExpenseShareRepo expenseShareRepo,
-            PaymentService paymentService) {
+            PaymentService paymentService,
+            PaymentRepo paymentRepo,
+            ExpenseRepo expenseRepo) {
 
         this.groupRepo = groupRepo;
         this.userRepo = userRepo;
         this.expenseShareRepo = expenseShareRepo;
         this.paymentService = paymentService;
+        this.paymentRepo = paymentRepo;
+        this.expenseRepo = expenseRepo;
     }
 
     public List<Group> getAllGroups() {
@@ -118,7 +120,7 @@ public class GroupService {
             );
         }
 
-        // Calculate what each user owes
+        // Subtract what each user owes
         for (ExpenseShare share : shares) {
 
             Integer userId = share.getUser().getId();
@@ -130,17 +132,47 @@ public class GroupService {
             );
         }
 
-        // Add what each user paid
-        for (ExpenseShare share : shares) {
+        List<Payment> paidPayments =
+                paymentRepo.findByGroupIdAndStatus(
+                        groupId,
+                        PaymentStatus.PAID
+                );
 
-            User payer = share.getExpense().getPaidBy();
+        for (Payment payment : paidPayments) {
+
+            Integer fromUserId =
+                    payment.getFromUser().getId();
+
+            Integer toUserId =
+                    payment.getToUser().getId();
+
+            balances.put(
+                    fromUserId,
+                    balances.get(fromUserId)
+                            .add(payment.getAmount())
+            );
+
+            balances.put(
+                    toUserId,
+                    balances.get(toUserId)
+                            .subtract(payment.getAmount())
+            );
+        }
+
+        // Add the full amount paid by each user
+        List<Expense> expenses =
+                expenseRepo.findByGroupId(groupId);
+
+        for (Expense expense : expenses) {
+
+            User payer = expense.getPaidBy();
 
             Integer payerId = payer.getId();
 
             balances.put(
                     payerId,
                     balances.get(payerId)
-                            .add(share.getAmount())
+                            .add(expense.getAmount())
             );
         }
 
@@ -219,17 +251,20 @@ public class GroupService {
 
     public List<Payment> createPaymentsFromSettlements(Integer groupId) {
 
-        List<SettlementDTO> settlements = getGroupSettlements(groupId);
+        List<SettlementDTO> settlements =
+                getGroupSettlements(groupId);
 
         List<Payment> payments = new ArrayList<>();
 
         for (SettlementDTO settlement : settlements) {
 
-            Payment payment = paymentService.createPaymentFromSettlement(
-                    settlement.getFromUserId(),
-                    settlement.getToUserId(),
-                    settlement.getAmount()
-            );
+            Payment payment =
+                    paymentService.createPaymentFromSettlement(
+                            groupId,
+                            settlement.getFromUserId(),
+                            settlement.getToUserId(),
+                            settlement.getAmount()
+                    );
 
             payments.add(payment);
         }
