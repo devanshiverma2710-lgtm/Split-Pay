@@ -20,17 +20,18 @@ public class ReminderService {
     private final ReminderRepo reminderRepo;
     private final PaymentRepo paymentRepo;
     private final UserRepo userRepo;
+    private final EmailService emailService;
 
     public ReminderService(
             ReminderRepo reminderRepo,
             PaymentRepo paymentRepo,
-            UserRepo userRepo) {
+            UserRepo userRepo, EmailService emailService) {
 
         this.reminderRepo = reminderRepo;
         this.paymentRepo = paymentRepo;
         this.userRepo = userRepo;
+        this.emailService = emailService;
     }
-
     public ReminderDTO createReminder(Integer paymentId) {
 
         Payment payment = paymentRepo.findById(paymentId)
@@ -39,32 +40,47 @@ public class ReminderService {
                                 "Payment not found with id: " + paymentId
                         ));
 
+        // Cannot create a reminder for a paid payment
         if (payment.getStatus() == PaymentStatus.PAID) {
             throw new RuntimeException(
                     "Cannot remind user because payment is already paid"
             );
         }
 
+        // Only one reminder per payment
         if (reminderRepo.existsByPaymentId(paymentId)) {
             throw new RuntimeException(
                     "Reminder already exists for this payment"
             );
         }
 
-        User user = payment.getToUser();
+        // The FROM user is the person who owes the payment
+        User user = payment.getFromUser();
 
         Reminder reminder = new Reminder();
 
         reminder.setPayment(payment);
         reminder.setRemindedUser(user);
+
         LocalDateTime now = LocalDateTime.now();
 
         reminder.setCreatedAt(now);
-        reminder.setLastReminderAt(now);
+
+        // Reminder is due immediately
         reminder.setNextReminderAt(now);
-        reminder.setSent(true);
+
+        // No reminder has been sent yet
+        reminder.setLastReminderAt(null);
+        reminder.setSent(false);
 
         Reminder savedReminder = reminderRepo.save(reminder);
+
+        emailService.sendPaymentReminder(
+                user.getEmail(),
+                user.getName(),
+                payment.getToUser().getName(),
+                payment.getAmount().toString()
+        );
 
         return convertToDTO(savedReminder);
     }
