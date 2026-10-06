@@ -70,7 +70,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Expense>> getExpensesByCategory(
+    public ResponseEntity<List<ExpenseDTO>> getExpensesByCategory(
             @PathVariable String category) {
 
         return ResponseEntity.ok(

@@ -4,9 +4,12 @@ import com.devanshi.dto.PaymentDTO;
 import com.devanshi.dto.UPIPaymentDTO;
 import com.devanshi.entity.Payment;
 import com.devanshi.service.PaymentService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -22,48 +25,74 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    // ==============================
+    // GET ALL PAYMENTS
+    // ==============================
+
     @GetMapping
     public ResponseEntity<List<PaymentDTO>> getAllPayments() {
+
         return ResponseEntity.ok(
                 paymentService.getAllPaymentDTOs()
         );
     }
 
+    // ==============================
+    // GET PAYMENT BY ID
+    // ==============================
+
     @GetMapping("/{id}")
     public ResponseEntity<PaymentDTO> getPaymentById(
-            @PathVariable Integer id) {
+            @PathVariable Integer id
+    ) {
 
         return ResponseEntity.ok(
                 paymentService.getPaymentDTOById(id)
         );
     }
 
+    // ==============================
+    // CREATE PAYMENT
+    // ==============================
+
     @PostMapping("/{groupId}/{fromUserId}/{toUserId}")
     public ResponseEntity<Payment> createPayment(
             @PathVariable Integer groupId,
             @PathVariable Integer fromUserId,
             @PathVariable Integer toUserId,
-            @Valid @RequestBody Payment payment) {
+            @Valid @RequestBody Payment payment
+    ) {
 
-        return new ResponseEntity<>(
+        Payment createdPayment =
                 paymentService.createPayment(
                         groupId,
                         fromUserId,
                         toUserId,
                         payment
-                ),
-                HttpStatus.CREATED
-        );
+                );
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdPayment);
     }
+
+    // ==============================
+    // MARK PAYMENT AS PAID
+    // ==============================
 
     @PutMapping("/{id}/paid")
     public ResponseEntity<Payment> markPaymentAsPaid(
-            @PathVariable Integer id) {
+            @PathVariable Integer id
+    ) {
 
         return ResponseEntity.ok(
                 paymentService.markPaymentAsPaid(id)
         );
     }
+
+    // ==============================
+    // GET PENDING PAYMENTS
+    // ==============================
 
     @GetMapping("/pending")
     public ResponseEntity<List<PaymentDTO>> getPendingPayments() {
@@ -72,30 +101,43 @@ public class PaymentController {
                 paymentService.getPendingPaymentDTOs()
         );
     }
+
+    // ==============================
+    // GENERATE UPI PAYMENT LINK
+    // ==============================
+
     @GetMapping("/{id}/upi")
     public ResponseEntity<UPIPaymentDTO> generateUPIPaymentLink(
-            @PathVariable Integer id) {
+            @PathVariable Integer id
+    ) {
 
         return ResponseEntity.ok(
                 paymentService.generateUPIPaymentLink(id)
         );
     }
+
+    // ==============================
+    // CREATE PAYMENT FROM SETTLEMENT
+    // ==============================
+
     @PostMapping("/from-settlement")
     public ResponseEntity<Payment> createPaymentFromSettlement(
             @RequestParam Integer groupId,
             @RequestParam Integer fromUserId,
             @RequestParam Integer toUserId,
-            @RequestParam BigDecimal amount) {
+            @RequestParam BigDecimal amount
+    ) {
 
-        return new ResponseEntity<>(
+        Payment payment =
                 paymentService.createPaymentFromSettlement(
                         groupId,
                         fromUserId,
                         toUserId,
                         amount
-                ),
-                HttpStatus.CREATED
-        );
-    }
+                );
 
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(payment);
+    }
 }

@@ -36,15 +36,14 @@ public class UserController {
         );
     }
 
-    @PostMapping
-    public ResponseEntity<User> addUser(
-            @Valid @RequestBody User user) {
-
-        return new ResponseEntity<>(
-                userService.addUser(user),
-                HttpStatus.CREATED
-        );
-    }
+    /*
+     * User creation should happen through:
+     *
+     * POST /auth/register
+     *
+     * Therefore the old POST /users endpoint
+     * is no longer needed.
+     */
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(

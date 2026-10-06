@@ -1,50 +1,60 @@
 package com.devanshi.service;
 
 import com.devanshi.dto.ExpenseDTO;
-import com.devanshi.entity.Expense;
-import com.devanshi.exception.ExpenseNotFoundException;
-import com.devanshi.repo.ExpenseRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import com.devanshi.dto.ExpenseShareRequest;
 import com.devanshi.dto.SplitExpenseRequest;
+import com.devanshi.entity.Expense;
 import com.devanshi.entity.ExpenseShare;
 import com.devanshi.entity.Group;
 import com.devanshi.entity.User;
+import com.devanshi.exception.ExpenseNotFoundException;
+import com.devanshi.repo.ExpenseRepo;
 import com.devanshi.repo.ExpenseShareRepo;
 import com.devanshi.repo.GroupRepo;
-import com.devanshi.repo.UserRepo;
+import com.devanshi.security.CurrentUserService;
+
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ExpenseService {
+
     private final ExpenseRepo expenseRepo;
+    private final ExpenseShareRepo expenseShareRepo;
+    private final GroupRepo groupRepo;
+    private final CurrentUserService currentUserService;
 
-    @Autowired
-    private ExpenseShareRepo expenseShareRepo;
-
-    @Autowired
-    private GroupRepo groupRepo;
-
-    @Autowired
-    private UserRepo userRepo;
-
-    public ExpenseService(ExpenseRepo expenseRepo) {
+    public ExpenseService(
+            ExpenseRepo expenseRepo,
+            ExpenseShareRepo expenseShareRepo,
+            GroupRepo groupRepo,
+            CurrentUserService currentUserService
+    ) {
         this.expenseRepo = expenseRepo;
+        this.expenseShareRepo = expenseShareRepo;
+        this.groupRepo = groupRepo;
+        this.currentUserService = currentUserService;
     }
 
+
+    // Get all expenses accessible to current user
     public List<ExpenseDTO> getAllExpenses() {
+
+        User currentUser = currentUserService.getCurrentUser();
+
         return expenseRepo.findAll()
                 .stream()
+                .filter(expense ->
+                        canAccessExpense(expense, currentUser)
+                )
                 .map(this::convertToDTO)
                 .toList();
     }
 
+
+    // Get expense by ID
     public ExpenseDTO getExpenseById(Integer id) {
 
         Expense expense = expenseRepo.findById(id)
@@ -53,8 +63,13 @@ public class ExpenseService {
                                 "Expense not found with id: " + id
                         ));
 
+        checkAccess(expense);
+
         return convertToDTO(expense);
     }
+
+
+    // Add personal expense
     public ExpenseDTO addExpense(ExpenseDTO dto) {
 
         dto.setDate(LocalDate.now());
@@ -66,7 +81,12 @@ public class ExpenseService {
         return convertToDTO(savedExpense);
     }
 
-    public ExpenseDTO updateExpense(Integer id, ExpenseDTO dto) {
+
+    // Update expense
+    public ExpenseDTO updateExpense(
+            Integer id,
+            ExpenseDTO dto
+    ) {
 
         Expense existingExpense = expenseRepo.findById(id)
                 .orElseThrow(() ->
@@ -74,6 +94,8 @@ public class ExpenseService {
                                 "Expense not found with id: " + id
                         ));
 
+        // Only the person who paid can modify the expense
+        checkOwnership(existingExpense);
 
         existingExpense.setTitle(dto.getTitle());
         existingExpense.setCategory(dto.getCategory());
@@ -81,27 +103,50 @@ public class ExpenseService {
         existingExpense.setNote(dto.getNote());
         existingExpense.setDate(dto.getDate());
 
-        Expense updatedExpense = expenseRepo.save(existingExpense);
+        Expense updatedExpense =
+                expenseRepo.save(existingExpense);
 
         return convertToDTO(updatedExpense);
     }
 
+
+    // Delete expense
     public void deleteExpense(Integer id) {
 
-        if (!expenseRepo.existsById(id)) {
-            throw new ExpenseNotFoundException(
-                    "Expense not found with id: " + id
-            );
-        }
+        Expense expense = expenseRepo.findById(id)
+                .orElseThrow(() ->
+                        new ExpenseNotFoundException(
+                                "Expense not found with id: " + id
+                        ));
+
+        // Only the person who paid can delete the expense
+        checkOwnership(expense);
 
         expenseRepo.deleteById(id);
     }
 
-    public List<Expense> getExpensesByCategory(String category){
-        return expenseRepo.findByCategory(category);
+
+    // Get expenses by category
+    public List<ExpenseDTO> getExpensesByCategory(
+            String category
+    ) {
+
+        User currentUser = currentUserService.getCurrentUser();
+
+        return expenseRepo.findByCategory(category)
+                .stream()
+                .filter(expense ->
+                        canAccessExpense(expense, currentUser)
+                )
+                .map(this::convertToDTO)
+                .toList();
     }
 
-    private Expense convertToEntity(ExpenseDTO dto) {
+
+    // Convert DTO to Entity
+    private Expense convertToEntity(
+            ExpenseDTO dto
+    ) {
 
         Expense expense = new Expense();
 
@@ -111,10 +156,20 @@ public class ExpenseService {
         expense.setNote(dto.getNote());
         expense.setDate(dto.getDate());
 
+        // Automatically assign logged-in user
+        User currentUser =
+                currentUserService.getCurrentUser();
+
+        expense.setPaidBy(currentUser);
+
         return expense;
     }
 
-    private ExpenseDTO convertToDTO(Expense expense) {
+
+    // Convert Entity to DTO
+    private ExpenseDTO convertToDTO(
+            Expense expense
+    ) {
 
         ExpenseDTO dto = new ExpenseDTO();
 
@@ -125,60 +180,70 @@ public class ExpenseService {
         dto.setNote(expense.getNote());
         dto.setDate(expense.getDate());
 
-
-        // Check whether this is a group expense
+        // Group expense
         if (expense.getGroup() != null) {
 
             dto.setGroupExpense(true);
-            dto.setGroupId(expense.getGroup().getId());
 
-            /*
-             * Currently Devanshi is user ID 1.
-             * Later, when we add authentication,
-             * this will come from the logged-in user.
-             */
-            Integer currentUserId = 1;
+            dto.setGroupId(
+                    expense.getGroup().getId()
+            );
 
+            Integer currentUserId =
+                    currentUserService.getCurrentUserId();
+
+            // Find logged-in user's share
             expenseShareRepo
                     .findByExpenseIdAndUserId(
                             expense.getId(),
                             currentUserId
                     )
                     .ifPresent(share ->
-                            dto.setUserShare(share.getAmount())
+                            dto.setUserShare(
+                                    share.getAmount()
+                            )
                     );
 
         } else {
 
-            // Normal personal expense
+            // Personal expense
             dto.setGroupExpense(false);
             dto.setGroupId(null);
 
-            // For a personal expense, the entire amount is the user's expense
-            dto.setUserShare(expense.getAmount());
+            dto.setUserShare(
+                    expense.getAmount()
+            );
         }
-
 
         return dto;
     }
-    public Expense createSplitExpense(SplitExpenseRequest request) {
+
+
+    // Create split expense
+    public Expense createSplitExpense(
+            SplitExpenseRequest request
+    ) {
+
+        // Logged-in user from JWT
+        User paidBy =
+                currentUserService.getCurrentUser();
 
         // Find group
-        Group group = groupRepo.findById(request.getGroupId())
-                .orElseThrow(() ->
-                        new RuntimeException("Group not found"));
+        Group group =
+                groupRepo.findById(
+                                request.getGroupId()
+                        )
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Group not found"
+                                ));
 
 
-        // Find payer
-        User paidBy = userRepo.findById(request.getPaidBy())
-                .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+        // Logged-in user must belong to group
+        if (!isGroupMember(group, paidBy)) {
 
-
-        // Make sure payer belongs to the group
-        if (!group.getUsers().contains(paidBy)) {
             throw new RuntimeException(
-                    "Payer does not belong to this group"
+                    "You are not a member of this group"
             );
         }
 
@@ -191,21 +256,25 @@ public class ExpenseService {
         expense.setCategory(request.getCategory());
         expense.setNote(request.getNote());
 
-        // Date generated automatically
         expense.setDate(LocalDate.now());
 
         expense.setGroup(group);
+
+        // Logged-in user is automatically payer
         expense.setPaidBy(paidBy);
 
 
-        // Save expense first
-        Expense savedExpense = expenseRepo.save(expense);
+        // Save expense
+        Expense savedExpense =
+                expenseRepo.save(expense);
 
 
         // Calculate equal share
-        int numberOfMembers = group.getUsers().size();
+        int numberOfMembers =
+                group.getUsers().size();
 
         if (numberOfMembers == 0) {
+
             throw new RuntimeException(
                     "Group must have at least one member"
             );
@@ -215,7 +284,9 @@ public class ExpenseService {
         BigDecimal shareAmount =
                 request.getAmount()
                         .divide(
-                                BigDecimal.valueOf(numberOfMembers),
+                                BigDecimal.valueOf(
+                                        numberOfMembers
+                                ),
                                 2,
                                 java.math.RoundingMode.HALF_UP
                         );
@@ -224,7 +295,8 @@ public class ExpenseService {
         // Create share for every group member
         for (User user : group.getUsers()) {
 
-            ExpenseShare share = new ExpenseShare();
+            ExpenseShare share =
+                    new ExpenseShare();
 
             share.setExpense(savedExpense);
             share.setUser(user);
@@ -237,11 +309,126 @@ public class ExpenseService {
         return savedExpense;
     }
 
-    public List<ExpenseDTO> getExpensesByGroup(Integer groupId) {
 
-        return expenseRepo.findByGroupId(groupId)
+    // Get expenses by group
+    public List<ExpenseDTO> getExpensesByGroup(
+            Integer groupId
+    ) {
+
+        User currentUser =
+                currentUserService.getCurrentUser();
+
+        Group group =
+                groupRepo.findById(groupId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Group not found"
+                                ));
+
+        // User must belong to the group
+        if (!isGroupMember(group, currentUser)) {
+
+            throw new RuntimeException(
+                    "You are not a member of this group"
+            );
+        }
+
+        return expenseRepo
+                .findByGroupId(groupId)
                 .stream()
                 .map(this::convertToDTO)
                 .toList();
+    }
+
+
+    /*
+     * Check whether the current user can VIEW an expense.
+     *
+     * Personal expense:
+     *      only the payer can view it.
+     *
+     * Group expense:
+     *      any member of that group can view it.
+     */
+    private boolean canAccessExpense(
+            Expense expense,
+            User currentUser
+    ) {
+
+        // Personal expense
+        if (expense.getGroup() == null) {
+
+            return expense.getPaidBy() != null
+                    && expense.getPaidBy()
+                    .getId()
+                    .equals(currentUser.getId());
+        }
+
+
+        // Group expense
+        return isGroupMember(
+                expense.getGroup(),
+                currentUser
+        );
+    }
+
+
+    /*
+     * Check whether the current user can VIEW
+     * a specific expense.
+     */
+    private void checkAccess(
+            Expense expense
+    ) {
+
+        User currentUser =
+                currentUserService.getCurrentUser();
+
+        if (!canAccessExpense(expense, currentUser)) {
+
+            throw new RuntimeException(
+                    "You are not authorized to access this expense"
+            );
+        }
+    }
+
+
+    /*
+     * Only the person who paid for the expense
+     * can update or delete it.
+     */
+    private void checkOwnership(
+            Expense expense
+    ) {
+
+        User currentUser =
+                currentUserService.getCurrentUser();
+
+        if (expense.getPaidBy() == null ||
+                !expense.getPaidBy()
+                        .getId()
+                        .equals(currentUser.getId())) {
+
+            throw new RuntimeException(
+                    "You are not authorized to modify this expense"
+            );
+        }
+    }
+
+
+    /*
+     * Check group membership.
+     */
+    private boolean isGroupMember(
+            Group group,
+            User user
+    ) {
+
+        return group.getUsers()
+                .stream()
+                .anyMatch(groupUser ->
+                        groupUser.getId()
+                                .equals(user.getId())
+                );
     }
 }

@@ -1,11 +1,11 @@
 package com.devanshi.controller;
 
-import com.devanshi.entity.Reminder;
+import com.devanshi.dto.ReminderDTO;
 import com.devanshi.service.ReminderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.devanshi.dto.ReminderDTO;
+
 import java.util.List;
 
 @RestController

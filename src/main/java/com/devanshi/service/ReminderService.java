@@ -9,6 +9,7 @@ import com.devanshi.exception.ExpenseNotFoundException;
 import com.devanshi.repo.PaymentRepo;
 import com.devanshi.repo.ReminderRepo;
 import com.devanshi.repo.UserRepo;
+import com.devanshi.security.CurrentUserService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,24 +22,49 @@ public class ReminderService {
     private final PaymentRepo paymentRepo;
     private final UserRepo userRepo;
     private final EmailService emailService;
+    private final CurrentUserService currentUserService;
 
     public ReminderService(
             ReminderRepo reminderRepo,
             PaymentRepo paymentRepo,
-            UserRepo userRepo, EmailService emailService) {
+            UserRepo userRepo,
+            EmailService emailService,
+            CurrentUserService currentUserService) {
 
         this.reminderRepo = reminderRepo;
         this.paymentRepo = paymentRepo;
         this.userRepo = userRepo;
         this.emailService = emailService;
+        this.currentUserService = currentUserService;
     }
+
     public ReminderDTO createReminder(Integer paymentId) {
+
+        User currentUser = currentUserService.getCurrentUser();
 
         Payment payment = paymentRepo.findById(paymentId)
                 .orElseThrow(() ->
                         new ExpenseNotFoundException(
                                 "Payment not found with id: " + paymentId
                         ));
+
+        /*
+         * Only the person who is owed the money
+         * can send a reminder.
+         *
+         * Example:
+         * Devanshi -> Rahul
+         *
+         * Devanshi is toUser.
+         * Rahul is fromUser.
+         *
+         * Devanshi can create the reminder.
+         */
+        if (!payment.getToUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException(
+                    "You are not authorized to send a reminder for this payment"
+            );
+        }
 
         // Cannot create a reminder for a paid payment
         if (payment.getStatus() == PaymentStatus.PAID) {
@@ -87,6 +113,23 @@ public class ReminderService {
 
     public List<ReminderDTO> getRemindersForUser(Integer userId) {
 
+        User currentUser = currentUserService.getCurrentUser();
+
+        /*
+         * Prevent users from requesting another user's reminders.
+         *
+         * Example:
+         * Logged-in user = Devanshi (ID 1)
+         * Request = /reminders/user/2
+         *
+         * This will be rejected.
+         */
+        if (!currentUser.getId().equals(userId)) {
+            throw new RuntimeException(
+                    "You are not authorized to view reminders for this user"
+            );
+        }
+
         if (!userRepo.existsById(userId)) {
             throw new ExpenseNotFoundException(
                     "User not found with id: " + userId
@@ -100,6 +143,32 @@ public class ReminderService {
     }
 
     public List<ReminderDTO> getRemindersForPayment(Integer paymentId) {
+
+        User currentUser = currentUserService.getCurrentUser();
+
+        Payment payment = paymentRepo.findById(paymentId)
+                .orElseThrow(() ->
+                        new ExpenseNotFoundException(
+                                "Payment not found with id: " + paymentId
+                        ));
+
+        /*
+         * A reminder belongs to a payment.
+         *
+         * Only users involved in that payment can see
+         * its reminder.
+         */
+        boolean isFromUser =
+                payment.getFromUser().getId().equals(currentUser.getId());
+
+        boolean isToUser =
+                payment.getToUser().getId().equals(currentUser.getId());
+
+        if (!isFromUser && !isToUser) {
+            throw new RuntimeException(
+                    "You are not authorized to view reminders for this payment"
+            );
+        }
 
         return reminderRepo.findByPaymentId(paymentId)
                 .stream()
