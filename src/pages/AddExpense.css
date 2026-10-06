@@ -1,0 +1,432 @@
+/* =========================================================
+   SPLITPAY ADD EXPENSE - STITCH FINTECH DESIGN
+   ========================================================= */
+
+.add-expense-page {
+  padding: 32px 40px 60px;
+  max-width: 860px;
+  margin: 0 auto;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #2c3531;
+}
+
+.add-expense-container {
+  width: 100%;
+}
+
+/* Header */
+.add-expense-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.back-circle-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #e6ece8;
+  background: #ffffff;
+  color: #657166;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.back-circle-btn:hover {
+  background: #daebe3;
+}
+
+.add-expense-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c3531;
+  letter-spacing: -0.4px;
+}
+
+.add-expense-header p {
+  font-size: 13px;
+  color: #727e77;
+  margin-top: 3px;
+}
+
+/* Feedback Banners */
+.feedback-banner {
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-success {
+  background: #daebe3;
+  color: #2e6651;
+  border: 1px solid #c5dfd4;
+}
+
+.banner-error {
+  background: #fff3f0;
+  color: #c95742;
+  border: 1px solid #f9d8cf;
+}
+
+/* Form Card */
+.expense-form-card {
+  background: #ffffff;
+  border: 1px solid #e6ece8;
+  border-radius: 18px;
+  padding: 28px 32px;
+  box-shadow: 0 4px 20px rgba(70, 85, 76, 0.05);
+}
+
+/* Type Toggle Pill */
+.type-toggle-pill-container {
+  display: flex;
+  background: #f1f5f2;
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #e6ece8;
+}
+
+.type-pill {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: #727e77;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.type-pill.pill-active {
+  background: #ffffff;
+  color: #2c3531;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Amount Hero Input */
+.amount-hero-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 18px;
+  background: #f8faf8;
+  border: 1px solid #e6ece8;
+  border-radius: 14px;
+  margin-bottom: 24px;
+}
+
+.hero-currency-label {
+  font-size: 32px;
+  font-weight: 700;
+  color: #657166;
+}
+
+.hero-amount-field {
+  font-size: 38px;
+  font-weight: 800;
+  color: #2c3531;
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 240px;
+  letter-spacing: -1px;
+}
+
+.hero-amount-field::placeholder {
+  color: #c0ccc4;
+}
+
+/* Field Groups */
+.form-field-group {
+  margin-bottom: 22px;
+}
+
+.form-field-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a5750;
+  margin-bottom: 8px;
+}
+
+.form-field-group input[type="text"],
+.form-field-group textarea,
+.group-select-dropdown {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #dce4e0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #2c3531;
+  background: #fbfdfc;
+  outline: none;
+  transition: all 0.18s ease;
+}
+
+.form-field-group input[type="text"]:focus,
+.form-field-group textarea:focus,
+.group-select-dropdown:focus {
+  border-color: #657166;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(101, 113, 102, 0.1);
+}
+
+/* Category Tiles */
+.category-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.category-tile-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border: 1px solid #e6ece8;
+  border-radius: 12px;
+  background: #fbfdfc;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.category-tile-btn:hover {
+  background: #f4f8f5;
+  border-color: #cbded6;
+}
+
+.category-tile-btn.cat-selected {
+  background: #daebe3;
+  border-color: #3b745e;
+  box-shadow: 0 2px 8px rgba(59, 116, 94, 0.12);
+}
+
+.cat-icon-emoji {
+  font-size: 20px;
+}
+
+.cat-name-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #4a5750;
+}
+
+.cat-selected .cat-name-label {
+  color: #2e6651;
+  font-weight: 700;
+}
+
+/* Group Split Configuration */
+.group-split-configuration-panel {
+  background: #f8faf8;
+  border: 1px solid #edf2ef;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.field-header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.selected-count-tag {
+  font-size: 11.5px;
+  color: #657166;
+  font-weight: 600;
+}
+
+.participants-chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.participant-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #dce4e0;
+  background: #ffffff;
+  color: #727e77;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.participant-pill-btn.participant-active {
+  background: #daebe3;
+  color: #2e6651;
+  border-color: #b5d7ca;
+  font-weight: 600;
+}
+
+.check-indicator {
+  font-size: 12px;
+}
+
+/* Split Method Tabs */
+.split-method-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.method-tab {
+  flex: 1;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid #dce4e0;
+  background: #ffffff;
+  color: #727e77;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.method-tab.active-tab {
+  background: #657166;
+  color: #ffffff;
+  border-color: #657166;
+}
+
+/* Split Preview Card */
+.split-preview-card {
+  background: #ffffff;
+  border: 1px solid #e1e9e4;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-top: 16px;
+}
+
+.preview-heading {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #9aa59f;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.preview-rows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.preview-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #fbfdfc;
+  border-radius: 8px;
+  border: 1px solid #edf2ef;
+}
+
+.user-name-part {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.user-name-part strong {
+  font-size: 13px;
+  color: #2c3531;
+}
+
+.user-name-part span {
+  font-size: 11px;
+  color: #9aa59f;
+}
+
+.calculated-share-val {
+  font-size: 14px;
+  color: #438f6b;
+  font-weight: 700;
+}
+
+.custom-share-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #727e77;
+}
+
+.custom-share-input-wrap input {
+  width: 70px;
+  padding: 4px 8px;
+  border: 1px solid #dce4e0;
+  border-radius: 6px;
+  font-size: 12px;
+  text-align: right;
+  outline: none;
+}
+
+/* Save Submit Button */
+.save-expense-submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: #657166;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 14px rgba(101, 113, 102, 0.25);
+  margin-top: 10px;
+}
+
+.save-expense-submit-btn:hover:not(:disabled) {
+  background: #546055;
+  transform: translateY(-1px);
+}
+
+.save-expense-submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .add-expense-page {
+    padding: 20px 16px 40px;
+  }
+
+  .expense-form-card {
+    padding: 20px 18px;
+  }
+
+  .category-tiles-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .split-method-tabs {
+    flex-direction: column;
+  }
+}

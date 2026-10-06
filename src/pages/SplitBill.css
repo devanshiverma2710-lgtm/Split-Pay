@@ -1,0 +1,496 @@
+.split-bill-page {
+  min-height: 100vh;
+  padding: 45px 55px;
+
+  background: linear-gradient(
+    135deg,
+    #f3faf8,
+    #f7f8fb
+  );
+
+  color: #344047;
+}
+
+
+/* Header */
+
+.split-bill-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-bottom: 30px;
+}
+
+.split-bill-header h1 {
+  margin: 0;
+
+  font-size: 30px;
+  font-weight: 700;
+
+  color: #344047;
+}
+
+.split-bill-header p {
+  margin: 6px 0 0;
+
+  color: #8a969c;
+  font-size: 14px;
+}
+
+
+/* Back */
+
+.split-bill-header .back-button {
+  width: 44px;
+  height: 44px;
+
+  border: 1px solid #d9ebe7;
+  border-radius: 12px;
+
+  background: #e8f7f3;
+  color: #20ad96;
+
+  font-size: 21px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.split-bill-header .back-button:hover {
+  background: #20ad96;
+  color: white;
+}
+
+
+/* Main card */
+
+.split-bill-card {
+  max-width: 850px;
+
+  margin: 0 auto;
+
+  padding: 34px;
+
+  background: rgba(255, 255, 255, 0.82);
+
+  border: 1px solid #e0ebe8;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 12px 35px rgba(43, 72, 68, 0.07);
+
+  backdrop-filter: blur(10px);
+}
+
+
+/* Form */
+
+.split-form-group {
+  margin-bottom: 22px;
+}
+
+.split-form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #4a575d;
+}
+
+.split-form-group input,
+.split-form-group select,
+.split-form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dce7e4;
+
+  border-radius: 11px;
+
+  background: white;
+
+  padding: 13px 15px;
+
+  color: #3c494f;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.split-form-group input:focus,
+.split-form-group select:focus,
+.split-form-group textarea:focus {
+  border-color: #38bda5;
+
+  box-shadow:
+    0 0 0 3px rgba(56, 189, 165, 0.1);
+}
+
+.split-form-group textarea {
+  min-height: 90px;
+
+  resize: vertical;
+}
+
+
+/* Amount */
+
+.split-amount-input {
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #dce7e4;
+
+  border-radius: 11px;
+
+  background: white;
+
+  overflow: hidden;
+}
+
+.split-amount-input span {
+  padding-left: 15px;
+
+  color: #20aa92;
+
+  font-weight: 700;
+}
+
+.split-amount-input input {
+  border: none;
+
+  box-shadow: none;
+
+  flex: 1;
+}
+
+
+/* Members */
+
+.members-section {
+  margin: 28px 0;
+
+  padding: 22px;
+
+  background: #f5faf9;
+
+  border: 1px solid #dcebe7;
+
+  border-radius: 15px;
+}
+
+.members-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 15px;
+}
+
+.members-header h2 {
+  margin: 0;
+
+  font-size: 17px;
+
+  color: #39484e;
+}
+
+.members-header p {
+  margin: 5px 0 0;
+
+  font-size: 12px;
+
+  color: #89969b;
+}
+
+.members-header > span {
+  padding: 6px 10px;
+
+  border-radius: 8px;
+
+  background: #e2f4ef;
+
+  color: #239b86;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+/* Member cards */
+
+.members-list {
+  display: grid;
+
+  grid-template-columns: repeat(
+    2,
+    1fr
+  );
+
+  gap: 10px;
+}
+
+.member-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  width: 100%;
+
+  padding: 12px;
+
+  border: 1px solid #e1e9e7;
+
+  border-radius: 12px;
+
+  background: white;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.member-card:hover {
+  border-color: #9fd8cc;
+
+  transform: translateY(-1px);
+}
+
+.member-card.selected {
+  border-color: #35b69f;
+
+  background: #eefaf7;
+
+  box-shadow:
+    0 4px 12px rgba(32, 168, 143, 0.08);
+}
+
+.member-avatar {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #e5f6f1;
+
+  color: #20a890;
+
+  font-weight: 700;
+}
+
+.member-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+  flex: 1;
+}
+
+.member-info strong {
+  font-size: 13px;
+
+  color: #3e4b51;
+}
+
+.member-info span {
+  font-size: 11px;
+
+  color: #929da2;
+}
+
+.member-check {
+  width: 21px;
+  height: 21px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  border: 1px solid #cbdad6;
+
+  color: white;
+
+  font-size: 12px;
+}
+
+.member-card.selected .member-check {
+  background: #20ad96;
+
+  border-color: #20ad96;
+}
+
+
+/* Summary */
+
+.split-summary {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr
+    1.4fr;
+
+  margin: 25px 0;
+
+  border: 1px solid #dce9e6;
+
+  border-radius: 15px;
+
+  overflow: hidden;
+
+  background: white;
+}
+
+.split-summary > div {
+  padding: 18px;
+
+  border-right: 1px solid #e5eeeb;
+}
+
+.split-summary > div:last-child {
+  border-right: none;
+}
+
+.split-summary span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #89959a;
+
+  font-size: 12px;
+}
+
+.split-summary strong {
+  color: #3d4b51;
+
+  font-size: 18px;
+}
+
+.split-summary .your-share {
+  background: #effaf7;
+}
+
+.split-summary .your-share strong {
+  color: #20a48d;
+}
+
+
+/* Loading */
+
+.split-loading {
+  padding: 13px;
+
+  border-radius: 11px;
+
+  background: #f7faf9;
+
+  color: #89969b;
+
+  font-size: 13px;
+}
+
+
+/* Button */
+
+.create-split-button {
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #20b59c;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.create-split-button:hover {
+  background: #199d88;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 7px 18px rgba(32, 181, 156, 0.2);
+}
+
+.create-split-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* Responsive */
+
+@media (max-width: 700px) {
+
+  .split-bill-page {
+    padding: 25px 15px;
+  }
+
+  .split-bill-card {
+    padding: 22px;
+  }
+
+  .members-list {
+    grid-template-columns: 1fr;
+  }
+
+  .split-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .split-summary > div {
+    border-right: none;
+
+    border-bottom: 1px solid #e5eeeb;
+  }
+
+  .split-summary > div:last-child {
+    border-bottom: none;
+  }
+
+}

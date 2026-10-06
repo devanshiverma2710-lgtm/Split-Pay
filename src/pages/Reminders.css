@@ -1,0 +1,429 @@
+.reminders-page {
+
+  min-height: 100vh;
+
+  background: #f8faf9;
+
+  padding: 40px;
+
+}
+
+
+.reminders-container {
+
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.reminders-header {
+
+  margin-bottom: 35px;
+
+}
+
+
+.back-button {
+
+  border: none;
+
+  background: transparent;
+
+  color: #2bbfa7;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  margin-bottom: 15px;
+
+  padding: 0;
+
+  font-weight: 500;
+
+}
+
+
+.back-button:hover {
+
+  text-decoration: underline;
+
+}
+
+
+.reminders-header h1 {
+
+  margin: 0;
+
+  font-size: 32px;
+
+}
+
+
+.reminders-header p {
+
+  color: #777;
+
+  margin-top: 8px;
+
+}
+
+
+/* =========================================
+   MESSAGES
+========================================= */
+
+.success-message {
+
+  background: #e8f8f2;
+
+  color: #16805f;
+
+  border: 1px solid #c9eee0;
+
+  border-radius: 10px;
+
+  padding: 12px 16px;
+
+  margin-bottom: 20px;
+
+}
+
+
+.error-message {
+
+  background: #fff0ee;
+
+  color: #d64545;
+
+  border: 1px solid #ffd6d1;
+
+  border-radius: 10px;
+
+  padding: 12px 16px;
+
+  margin-bottom: 20px;
+
+}
+
+
+/* =========================================
+   SECTION
+========================================= */
+
+.reminders-section {
+
+  margin-top: 20px;
+
+}
+
+
+.section-heading {
+
+  margin-bottom: 20px;
+
+}
+
+
+.section-heading h2 {
+
+  margin-bottom: 5px;
+
+}
+
+
+.section-heading p {
+
+  color: #777;
+
+  margin-top: 0;
+
+}
+
+
+/* =========================================
+   REMINDER LIST
+========================================= */
+
+.reminders-list {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+}
+
+
+.reminder-card {
+
+  background: white;
+
+  border: 1px solid #e6e9e7;
+
+  border-radius: 15px;
+
+  padding: 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  transition: 0.2s ease;
+
+}
+
+
+.reminder-card:hover {
+
+  box-shadow:
+    0 5px 20px
+    rgba(0, 0, 0, 0.05);
+
+  transform: translateY(-1px);
+
+}
+
+
+/* =========================================
+   ICON
+========================================= */
+
+.reminder-icon {
+
+  width: 48px;
+
+  height: 48px;
+
+  min-width: 48px;
+
+  border-radius: 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #e9f8f4;
+
+  color: #16805f;
+
+  font-weight: bold;
+
+  font-size: 18px;
+
+}
+
+
+/* =========================================
+   INFO
+========================================= */
+
+.reminder-info {
+
+  flex: 1;
+
+}
+
+
+.reminder-info h3 {
+
+  margin: 0 0 7px;
+
+  font-size: 17px;
+
+}
+
+
+.reminder-info p {
+
+  margin: 3px 0;
+
+  color: #777;
+
+  font-size: 14px;
+
+}
+
+
+/* =========================================
+   ACTION
+========================================= */
+
+.reminder-action {
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+
+/* SEND REMINDER */
+
+.send-reminder-button {
+
+  padding: 10px 17px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #2bbfa7;
+
+  color: white;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition: 0.2s ease;
+
+}
+
+
+.send-reminder-button:hover {
+
+  background: #23a990;
+
+}
+
+
+.send-reminder-button:disabled {
+
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+}
+
+
+/* REMINDER SENT */
+
+.reminder-sent-button {
+
+  padding: 10px 17px;
+
+  border: 1px solid #bfe9dc;
+
+  border-radius: 9px;
+
+  background: #e9f8f4;
+
+  color: #16805f;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: default;
+
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.reminder-empty {
+
+  background: white;
+
+  border: 1px solid #e6e9e7;
+
+  border-radius: 15px;
+
+  padding: 55px;
+
+  text-align: center;
+
+  margin-top: 20px;
+
+}
+
+
+.empty-icon {
+
+  margin: 0 auto 15px;
+
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 50%;
+
+  background: #e8f8f2;
+
+  color: #16805f;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-weight: bold;
+
+  font-size: 18px;
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .reminders-page {
+
+    padding: 20px;
+
+  }
+
+
+  .reminder-card {
+
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+
+  }
+
+
+  .reminder-info {
+
+    min-width: 200px;
+
+  }
+
+
+  .reminder-action {
+
+    width: 100%;
+
+    margin-left: 66px;
+
+  }
+
+
+  .send-reminder-button,
+  .reminder-sent-button {
+
+    width: 100%;
+
+  }
+
+}

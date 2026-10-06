@@ -1,0 +1,554 @@
+/* =========================================================
+   SPLITPAY GROUP DETAILS - STITCH FINTECH DESIGN
+   ========================================================= */
+
+.group-details-page {
+  padding: 32px 40px 60px;
+  max-width: 1320px;
+  margin: 0 auto;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #2c3531;
+}
+
+/* Header */
+.group-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.details-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.details-back-nav-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #e6ece8;
+  background: #ffffff;
+  color: #657166;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.details-back-nav-btn:hover {
+  background: #daebe3;
+  border-color: #c5dfd4;
+}
+
+.group-header-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group-header-title-row h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c3531;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+
+.members-count-badge {
+  padding: 3px 8px;
+  background: #daebe3;
+  color: #3b745e;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.details-header-left p {
+  font-size: 13px;
+  color: #727e77;
+  margin-top: 3px;
+}
+
+.add-group-expense-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #657166;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 8px rgba(101, 113, 102, 0.2);
+}
+
+.add-group-expense-btn:hover {
+  background: #546055;
+  transform: translateY(-1px);
+}
+
+/* Metric Cards */
+.group-summary-cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.group-metric-card {
+  background: #ffffff;
+  border: 1px solid #e6ece8;
+  border-radius: 14px;
+  padding: 18px 22px;
+  box-shadow: 0 2px 10px rgba(70, 85, 76, 0.04);
+}
+
+.metric-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #9aa59f;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: 750;
+  color: #2c3531;
+  margin-top: 4px;
+  line-height: 1.2;
+}
+
+.metric-subtext {
+  font-size: 11px;
+  color: #727e77;
+  margin-top: 4px;
+  display: block;
+}
+
+.text-green {
+  color: #438f6b;
+}
+
+.text-coral {
+  color: #c96752;
+}
+
+.text-muted {
+  color: #657166;
+}
+
+/* Section Cards */
+.details-section-card {
+  background: #ffffff;
+  border: 1px solid #e6ece8;
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 2px 10px rgba(70, 85, 76, 0.04);
+  margin-bottom: 20px;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.section-title-row h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3531;
+}
+
+.section-subtitle {
+  font-size: 11.5px;
+  color: #9aa59f;
+  margin-top: 2px;
+}
+
+.section-count {
+  font-size: 12px;
+  color: #727e77;
+  font-weight: 500;
+}
+
+/* Members Chips */
+.members-chips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.member-detail-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #f8faf8;
+  border: 1px solid #edf2ef;
+  border-radius: 10px;
+}
+
+.member-avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.member-text-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.member-text-info strong {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #2c3531;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-text-info span {
+  font-size: 10.5px;
+  color: #9aa59f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Balances & Settlements Grid */
+.balances-settlements-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 18px;
+}
+
+.balances-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.balance-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #fbfdfc;
+  border: 1px solid #edf2ef;
+  border-radius: 8px;
+}
+
+.balance-member-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.balance-member-name {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #2c3531;
+}
+
+.balance-amount-tag {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Settlements List */
+.settlements-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settlement-item-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #f8faf8;
+  border: 1px solid #edf2ef;
+  border-radius: 10px;
+}
+
+.settlement-direction-block {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.payer-name {
+  font-weight: 600;
+  color: #2c3531;
+}
+
+.settle-arrow {
+  color: #9aa59f;
+  font-size: 14px;
+}
+
+.payee-name {
+  font-weight: 600;
+  color: #657166;
+}
+
+.settlement-action-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settle-amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: #438f6b;
+}
+
+.settle-btn-action {
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: #daebe3;
+  color: #3b745e;
+  border: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.settle-btn-action:hover:not(:disabled) {
+  background: #c5dfd4;
+}
+
+.settled-status-box {
+  text-align: center;
+  padding: 24px 16px;
+  color: #727e77;
+}
+
+.settled-check {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #daebe3;
+  color: #3b745e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  font-weight: 700;
+}
+
+/* Group Expenses Table */
+.group-expenses-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.group-expense-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: #fbfdfc;
+  border: 1px solid #edf2ef;
+  border-radius: 10px;
+  transition: background 0.15s ease;
+}
+
+.group-expense-row:hover {
+  background: #f4f8f5;
+}
+
+.expense-left-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.expense-cat-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f1f6f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.expense-title-text {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2c3531;
+  display: block;
+}
+
+.expense-sub-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.cat-pill {
+  padding: 1px 6px;
+  background: #eef4f8;
+  color: #497184;
+  border-radius: 4px;
+  font-size: 9.5px;
+  font-weight: 600;
+}
+
+.date-text {
+  font-size: 11px;
+  color: #9aa59f;
+}
+
+.expense-right-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-align: right;
+}
+
+.total-bill-tag small,
+.your-share-tag small {
+  font-size: 9.5px;
+  color: #9aa59f;
+  display: block;
+  text-transform: uppercase;
+}
+
+.total-bill-tag span {
+  font-size: 12.5px;
+  color: #727e77;
+  font-weight: 500;
+}
+
+.your-share-tag strong {
+  font-size: 14.5px;
+  color: #438f6b;
+  font-weight: 700;
+}
+
+.empty-details-notice {
+  padding: 24px;
+  text-align: center;
+  color: #9aa59f;
+  font-size: 13px;
+}
+
+/* Loading & Error */
+.group-details-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  gap: 14px;
+  color: #727e77;
+}
+
+.group-details-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid #e6ece8;
+  border-top-color: #657166;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.group-details-error-card {
+  text-align: center;
+  padding: 48px 24px;
+  background: #ffffff;
+  border: 1px solid #e6ece8;
+  border-radius: 16px;
+  max-width: 480px;
+  margin: 40px auto;
+}
+
+.details-back-action-btn {
+  padding: 10px 18px;
+  background: #657166;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+/* Avatar Palette */
+.bg-mint { background: #daebe3; color: #3b745e; }
+.bg-peach { background: #fde0d3; color: #9b543d; }
+.bg-blue { background: #99cdd8; color: #2c5963; }
+.bg-coral { background: #f3c9b2; color: #8c4b31; }
+.bg-pale { background: #cfd6c4; color: #4f5a43; }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .group-summary-cards-row {
+    grid-template-columns: 1fr;
+  }
+
+  .balances-settlements-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .group-details-page {
+    padding: 20px 16px 40px;
+  }
+
+  .group-details-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .add-group-expense-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .expense-right-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

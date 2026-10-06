@@ -1,0 +1,464 @@
+/* =========================================================
+   SPLITPAY SETTINGS PAGE - STITCH FINTECH DESIGN
+   ========================================================= */
+
+.settings-page {
+  padding: 32px 40px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #2c3531;
+}
+
+/* Header */
+.settings-header {
+  margin-bottom: 28px;
+}
+
+.settings-header h1 {
+  font-size: 25px;
+  font-weight: 700;
+  color: #2c3531;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+
+.settings-header p {
+  font-size: 13px;
+  color: #727e77;
+  margin-top: 4px;
+}
+
+.logout-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: #fde0d3;
+  color: #a45842;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.logout-banner button {
+  padding: 4px 12px;
+  background: #a45842;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Grid Layout */
+.settings-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+/* Settings Card */
+.settings-card {
+  background: #ffffff;
+  border: 1px solid #e6ece8;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(70, 85, 76, 0.04);
+}
+
+.settings-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #edf2ef;
+}
+
+.card-header-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.settings-card-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3531;
+}
+
+.settings-card-header p {
+  font-size: 12px;
+  color: #727e77;
+  margin-top: 2px;
+}
+
+/* Profile Form */
+.profile-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: #f8faf8;
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+
+.settings-large-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #daebe3;
+  color: #3b745e;
+  font-size: 18px;
+  font-weight: 750;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-meta-info strong {
+  display: block;
+  font-size: 14px;
+  color: #2c3531;
+}
+
+.avatar-meta-info span {
+  font-size: 11.5px;
+  color: #9aa59f;
+}
+
+.settings-feedback-banner {
+  padding: 8px 12px;
+  background: #daebe3;
+  color: #2e6651;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.settings-field-group {
+  margin-bottom: 16px;
+}
+
+.settings-field-group label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #4a5750;
+  margin-bottom: 6px;
+}
+
+.settings-field-group input,
+.currency-select-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #dce4e0;
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: #2c3531;
+  background: #fbfdfc;
+  outline: none;
+  transition: all 0.18s ease;
+}
+
+.settings-field-group input:focus,
+.currency-select-input:focus {
+  border-color: #657166;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(101, 113, 102, 0.1);
+}
+
+.form-submit-row {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.settings-save-btn {
+  padding: 10px 20px;
+  background: #657166;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+.settings-save-btn:hover:not(:disabled) {
+  background: #546055;
+}
+
+/* Toggles & Preferences */
+.toggle-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.toggle-list-title,
+.sessions-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #9aa59f;
+  text-transform: uppercase;
+}
+
+.toggle-row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #fbfdfc;
+  border: 1px solid #edf2ef;
+  border-radius: 10px;
+  gap: 16px;
+}
+
+.toggle-row-item strong {
+  display: block;
+  font-size: 13px;
+  color: #2c3531;
+}
+
+.toggle-row-item p {
+  font-size: 11.5px;
+  color: #727e77;
+  margin-top: 2px;
+}
+
+/* Switch Toggle Component */
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.switch-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #dce4e0;
+  border-radius: 24px;
+  transition: 0.2s ease;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+input:checked + .toggle-slider {
+  background: #657166;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(18px);
+}
+
+/* Security & Sessions */
+.security-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.active-sessions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.session-item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f8faf8;
+  border: 1px solid #edf2ef;
+  border-radius: 10px;
+}
+
+.session-icon {
+  font-size: 18px;
+}
+
+.session-info {
+  flex: 1;
+}
+
+.session-info strong {
+  display: block;
+  font-size: 12.5px;
+  color: #2c3531;
+}
+
+.session-info span {
+  font-size: 11px;
+  color: #9aa59f;
+}
+
+.current-badge {
+  padding: 2px 8px;
+  background: #daebe3;
+  color: #3b745e;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 650;
+}
+
+/* Account Actions */
+.account-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.account-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: #fbfdfc;
+  border: 1px solid #edf2ef;
+  border-radius: 10px;
+  gap: 16px;
+}
+
+.account-action-row strong {
+  display: block;
+  font-size: 13px;
+  color: #2c3531;
+}
+
+.account-action-row p {
+  font-size: 11.5px;
+  color: #727e77;
+  margin-top: 2px;
+}
+
+.action-link-btn {
+  padding: 7px 14px;
+  background: #daebe3;
+  color: #3b745e;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.action-link-btn:hover {
+  background: #c5dfd4;
+}
+
+.danger-zone-row {
+  background: #fff8f6;
+  border-color: #fde0d3;
+}
+
+.logout-btn {
+  padding: 7px 14px;
+  background: #fde0d3;
+  color: #a45842;
+  border: 1px solid #f3c9b2;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: #f3c9b2;
+}
+
+/* Modals */
+.modal-desc-text {
+  font-size: 13.5px;
+  color: #727e77;
+  margin-bottom: 22px;
+  line-height: 1.45;
+}
+
+.modal-btn-danger {
+  padding: 10px 18px;
+  background: #c95742;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modal-btn-danger:hover {
+  background: #b24734;
+}
+
+.modal-feedback {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.feedback-ok {
+  background: #daebe3;
+  color: #2e6651;
+}
+
+.feedback-err {
+  background: #fff3f0;
+  color: #c95742;
+}
+
+/* Avatar Palette */
+.bg-mint { background: #daebe3; color: #3b745e; }
+.bg-peach { background: #fde0d3; color: #9b543d; }
+.bg-blue { background: #99cdd8; color: #2c5963; }
+.bg-coral { background: #f3c9b2; color: #8c4b31; }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .settings-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 20px 16px 40px;
+  }
+}
